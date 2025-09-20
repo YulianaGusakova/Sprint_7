@@ -2,18 +2,17 @@ package steps;
 
 import Constants.ApiEndPoints;
 import POJO.Courier;
-import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.given;
 
 public class CourierSteps {
     public ValidatableResponse createCourier(Courier courier) {
-       return given()
+        return given()
                 .body(courier)
                 .when()
                 .post(ApiEndPoints.COURIER_CREATE_POST)
-               .then();
+                .then();
     }
 
     public ValidatableResponse loginCourier(Courier courier) {

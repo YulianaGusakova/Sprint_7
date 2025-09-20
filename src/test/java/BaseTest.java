@@ -2,7 +2,6 @@ import Constants.RestConfig;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.LogConfig;
-import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import org.junit.Before;
 

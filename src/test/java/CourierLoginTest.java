@@ -1,7 +1,7 @@
 import Constants.CourierTestData;
 import POJO.Courier;
-import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
+import io.restassured.response.ValidatableResponse;
 import net.datafaker.Faker;
 import org.junit.After;
 import org.junit.Before;
@@ -26,24 +26,23 @@ public class CourierLoginTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Успешная авторизовация при передаче всех обязательных полей")
-    @Description("ОР: HTTP/1.1 200, body: возвращается id")
+    @DisplayName("Успешная авторизация при передаче всех обязательных полей")
 
     public void courierLoginTest() {
         courierSteps
                 .createCourier(courier);
-
         courierSteps
                 .loginCourier(courier)
                 .statusCode(HTTP_OK)
                 .body("id", notNullValue());
     }
 
+
     @Test
     @DisplayName("Авторизация без логина")
-    @Description("ОР: HTTP/1.1 400 Bad Request, body: \"message\":  \"Недостаточно данных для входа\"")
 
     public void courierLoginWithoutLoginTest() {
+
         courier.withLogin("");
         courierSteps
                 .loginCourier(courier)
@@ -53,7 +52,6 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация без пароля")
-    @Description("ОР: HTTP/1.1 400 Bad Request, body: \"message\":  \"Недостаточно данных для входа\"")
 
     public void courierLoginWithoutPasswordTest() {
         courier.withPassword("");
@@ -65,7 +63,6 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация без логина и пароля")
-    @Description("ОР: HTTP/1.1 400 Bad Request, body: \"message\":  \"Недостаточно данных для входа\"")
 
     public void courierLoginWithoutLoginAndPasswordTest() {
         courier.withLogin("");
@@ -78,7 +75,6 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация с неверным логином")
-    @Description("ОР: HTTP/1.1 404 Not Found, body: \"message\": \"Учетная запись не найдена\"")
 
     public void courierLoginWithIncorrectLoginTest() {
         courier.withLogin(CourierTestData.INCORRECT_LOGIN);
@@ -90,7 +86,6 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация с неверным паролем")
-    @Description("ОР: HTTP/1.1 404 Not Found, body: \"message\": \"Учетная запись не найдена\"")
 
     public void courierLoginWithIncorrectPasswordTest() {
         courier.withPassword(CourierTestData.INCORRECT_PASSWORD);
@@ -102,7 +97,6 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация с неверным логином и паролем")
-    @Description("ОР: HTTP/1.1 404 Not Found, body: \"message\": \"Учетная запись не найдена\"")
 
     public void courierLoginWithIncorrectLoginAndPasswordTest() {
         courier.withLogin(CourierTestData.INCORRECT_LOGIN);
@@ -116,12 +110,23 @@ public class CourierLoginTest extends BaseTest {
     @After
     public void tearDown() {
         try {
-            if (courier.getLogin() != null && !courier.getLogin().isEmpty()) {
+            // Проверяем, создан ли курьер и есть ли у него ID
+            if (courier != null && courier.getId() != null) {
                 try {
-                    Integer id = courierSteps.loginCourier(courier)
-                            .extract().body().path("id");
-                    courier.withId(id);
+                    // Пытаемся удалить курьера по ID
                     courierSteps.deleteCourier(courier);
+                } catch (Exception e) {
+                    System.out.println("Не удалось удалить курьера с ID: " + courier.getId());
+                }
+            } else {
+                // Если ID нет, пытаемся получить его через авторизацию
+                try {
+                    ValidatableResponse response = courierSteps.loginCourier(courier);
+                    Integer id = response.extract().body().path("id");
+                    if (id != null) {
+                        courier.withId(id);
+                        courierSteps.deleteCourier(courier);
+                    }
                 } catch (Exception e) {
                     System.out.println("Не удалось получить ID курьера для удаления");
                 }

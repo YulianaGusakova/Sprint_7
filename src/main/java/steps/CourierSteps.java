@@ -2,12 +2,15 @@ package steps;
 
 import Constants.ApiEndPoints;
 import POJO.Courier;
+import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 
 import static io.restassured.RestAssured.given;
 
 public class CourierSteps {
-    public ValidatableResponse createCourier(Courier courier) {
+
+    @Step("Создание курьера")
+        public ValidatableResponse createCourier(Courier courier) {
         return given()
                 .body(courier)
                 .when()
@@ -15,7 +18,8 @@ public class CourierSteps {
                 .then();
     }
 
-    public ValidatableResponse loginCourier(Courier courier) {
+    @Step("Авторизация курьера")
+        public ValidatableResponse loginCourier(Courier courier) {
         return given()
                 .body(courier)
                 .when()
@@ -23,7 +27,8 @@ public class CourierSteps {
                 .then();
     }
 
-    public ValidatableResponse deleteCourier(Courier courier) {
+    @Step("Удаление курьера")
+        public ValidatableResponse deleteCourier(Courier courier) {
         return given()
                 .pathParams("id", courier.getId())
                 .when()

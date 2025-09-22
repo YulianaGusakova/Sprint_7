@@ -1,4 +1,4 @@
-package POJO;
+package ru.yandex.practicum.pojo;
 
 import java.util.List;
 

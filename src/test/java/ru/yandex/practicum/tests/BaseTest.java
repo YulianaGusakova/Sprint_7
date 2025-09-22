@@ -1,4 +1,6 @@
-import Constants.RestConfig;
+package ru.yandex.practicum.tests;
+
+import ru.yandex.practicum.constants.RestConfig;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.LogConfig;

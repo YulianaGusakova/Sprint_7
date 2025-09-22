@@ -1,4 +1,4 @@
-package Constants;
+package ru.yandex.practicum.constants;
 
 public class CourierTestData {
     public static final String INCORRECT_LOGIN = "peter505";

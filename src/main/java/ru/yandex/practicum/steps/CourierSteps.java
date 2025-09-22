@@ -1,7 +1,7 @@
-package steps;
+package ru.yandex.practicum.steps;
 
-import Constants.ApiEndPoints;
-import POJO.Courier;
+import ru.yandex.practicum.constants.ApiEndPoints;
+import ru.yandex.practicum.pojo.Courier;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 

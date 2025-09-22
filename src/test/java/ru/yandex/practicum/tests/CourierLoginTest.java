@@ -1,12 +1,15 @@
-import Constants.CourierTestData;
-import POJO.Courier;
+package ru.yandex.practicum.tests;
+
+import io.qameta.allure.Description;
+import ru.yandex.practicum.constants.CourierTestData;
+import ru.yandex.practicum.pojo.Courier;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import net.datafaker.Faker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import steps.CourierSteps;
+import ru.yandex.practicum.steps.CourierSteps;
 
 import static java.net.HttpURLConnection.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -20,17 +23,17 @@ public class CourierLoginTest extends BaseTest {
     public void setUP() {
         Faker faker = new Faker();
         courier = new Courier();
-        courier.withLogin(faker.name().firstName().toLowerCase() +
+               courier.withLogin(faker.name().firstName().toLowerCase() +
                         faker.number().digits(2))
                 .withPassword(faker.internet().password());
+        courierSteps.createCourier(courier);
     }
 
     @Test
     @DisplayName("Успешная авторизация при передаче всех обязательных полей")
+    @Description("Проверяет, что при авторизации со всеми обязательными параметрами, авторизация завершается успешно (HTTP/1.1 200), и получаем id курьера")
 
     public void courierLoginTest() {
-        courierSteps
-                .createCourier(courier);
         courierSteps
                 .loginCourier(courier)
                 .statusCode(HTTP_OK)
@@ -40,6 +43,7 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация без логина")
+    @Description("Проверяет, что при попытке авторизации курьера без логина, получаем ошибку: HTTP/1.1 400 Bad Request, body: \"message\":  \"Недостаточно данных для входа\"")
 
     public void courierLoginWithoutLoginTest() {
 
@@ -52,6 +56,7 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация без пароля")
+    @Description("Проверяет, что при попытке авторизации курьера без пароля, получаем ошибку: HTTP/1.1 400 Bad Request, body: \"message\":  \"Недостаточно данных для входа\"")
 
     public void courierLoginWithoutPasswordTest() {
         courier.withPassword("");
@@ -63,6 +68,7 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация без логина и пароля")
+    @Description("Проверяет, что при попытке авторизации курьера без логина и пароля, получаем ошибку: HTTP/1.1 400 Bad Request, body: \"message\":  \"Недостаточно данных для входа\"")
 
     public void courierLoginWithoutLoginAndPasswordTest() {
         courier.withLogin("");
@@ -75,6 +81,7 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация с неверным логином")
+    @Description("Проверяет, что при попытке авторизации курьера с несуществующим логином, получаем ошибку: HTTP/1.1 404 Not Found, body: \"message\": \"Учетная запись не найдена\"")
 
     public void courierLoginWithIncorrectLoginTest() {
         courier.withLogin(CourierTestData.INCORRECT_LOGIN);
@@ -86,6 +93,7 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация с неверным паролем")
+    @Description("Проверяет, что при попытке авторизации курьера с существующим логином и неверным паролем, получаем ошибку: HTTP/1.1 404 Not Found, body: \"message\": \"Учетная запись не найдена\"")
 
     public void courierLoginWithIncorrectPasswordTest() {
         courier.withPassword(CourierTestData.INCORRECT_PASSWORD);
@@ -97,6 +105,7 @@ public class CourierLoginTest extends BaseTest {
 
     @Test
     @DisplayName("Авторизация с неверным логином и паролем")
+    @Description("Проверяет, что при попытке авторизации курьера с несуществующим логином и неверным паролем, получаем ошибку: HTTP/1.1 404 Not Found, body: \"message\": \"Учетная запись не найдена\"")
 
     public void courierLoginWithIncorrectLoginAndPasswordTest() {
         courier.withLogin(CourierTestData.INCORRECT_LOGIN);

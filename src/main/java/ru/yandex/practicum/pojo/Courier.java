@@ -1,4 +1,4 @@
-package POJO;
+package ru.yandex.practicum.pojo;
 
 public class Courier {
     private String login;

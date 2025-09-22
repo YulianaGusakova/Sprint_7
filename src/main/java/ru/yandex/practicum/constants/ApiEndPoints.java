@@ -1,4 +1,4 @@
-package Constants;
+package ru.yandex.practicum.constants;
 
 public class ApiEndPoints {
         public static final String COURIER_CREATE_POST = "/api/v1/courier";

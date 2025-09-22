@@ -1,11 +1,13 @@
-import POJO.Courier;
+package ru.yandex.practicum.tests;
+
+import ru.yandex.practicum.pojo.Courier;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import net.datafaker.Faker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import steps.CourierSteps;
+import ru.yandex.practicum.steps.CourierSteps;
 
 import static java.net.HttpURLConnection.*;
 
@@ -26,7 +28,7 @@ public class CourierCreateTest extends BaseTest {
 
     @Test
     @DisplayName("Успешное создание курьера с передачей всех обязательных полей")
-    @Description("ОР: HTTP/1.1 201 Created, body: ok: true")
+    @Description("Проверяет, что при передаче всех обязательных параметров будет успешно создана учетная запись курьера: HTTP/1.1 201 Created, body: ok: true")
     public void courierSuccessfulCreateTest() {
         courierSteps
                 .createCourier(courier)
@@ -36,7 +38,7 @@ public class CourierCreateTest extends BaseTest {
 
     @Test
     @DisplayName("Нельзя создать двух одинаковых курьеров")
-    @Description("ОР: HTTP/1.1 409 Сonflict, body: \"message\": \"Этот логин уже используется\"")
+    @Description("Проверяет, что при повторном создании курьера с уже существующим логином, получаем ошибку: HTTP/1.1 409 Сonflict, body: \"message\": \"Этот логин уже используется\"")
     public void courierDoubleCreateTest() {
         courierSteps
                 .createCourier(courier);
@@ -48,7 +50,7 @@ public class CourierCreateTest extends BaseTest {
 
     @Test
     @DisplayName("Создание курьера без логина")
-    @Description("ОР: HTTP/1.1 400 Bad Request, body: \"message\": \"Недостаточно данных для создания учетной записи\"")
+    @Description("Проверяет, что при попытке создать курьера без логина,получаем ошибку: HTTP/1.1 400 Bad Request, body: \"message\": \"Недостаточно данных для создания учетной записи\"")
     public void courierWithoutLoginCreateTets() {
         courier.withLogin("");
         courierSteps
@@ -59,7 +61,7 @@ public class CourierCreateTest extends BaseTest {
 
     @Test
     @DisplayName("Создание курьера без пароля")
-    @Description("ОР: HTTP/1.1 400 Bad Request, body: \"message\": \"Недостаточно данных для создания учетной записи\"")
+    @Description("Проверяет, что при попытке создать курьера без пароля, получаем ошибку: HTTP/1.1 400 Bad Request, body: \"message\": \"Недостаточно данных для создания учетной записи\"")
 
     public void courierWithoutPasswordCreateTest() {
         courier.withPassword("");
@@ -71,7 +73,7 @@ public class CourierCreateTest extends BaseTest {
 
     @Test
     @DisplayName("Создание курьера без логина и пароля")
-    @Description("ОР: HTTP/1.1 400 Bad Request, body: \"message\": \"Недостаточно данных для создания учетной записи\"")
+    @Description("Проверяет, что при попытке создать курьера без логина и пароля, получаем ошибку: HTTP/1.1 400 Bad Request, body: \"message\": \"Недостаточно данных для создания учетной записи\"")
 
     public void courierWithoutLoginAndPasswordCreateTest() {
         courier.withLogin("");

@@ -1,4 +1,7 @@
-import POJO.Order;
+package ru.yandex.practicum.tests;
+
+import io.qameta.allure.Description;
+import ru.yandex.practicum.pojo.Order;
 import io.qameta.allure.junit4.DisplayName;
 import net.datafaker.Faker;
 import org.junit.After;
@@ -6,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import steps.OrderSteps;
+import ru.yandex.practicum.steps.OrderSteps;
 
 
 import java.util.ArrayList;
@@ -54,7 +57,8 @@ public class MakeOrderColorTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Создание заказа с указанием цвета самоката")
+    @DisplayName("Создание заказа с указанием и без указания цвета самоката")
+    @Description("Проверяет возможность создания заказа с указанием различных цветов самоката, включая одиночные и множественные выборы, а также отсутствие выбора цвета.")
     public void makeOrderColorTest() {
         order.withColor(color);
         orderSteps
